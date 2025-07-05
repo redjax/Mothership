@@ -13,3 +13,6 @@
 [submodule "modules/system_scripts"]
 	path = modules/system_scripts
 	url = git@github.com:redjax/system_scripts.git
+[submodule "modules/wezterm"]
+	path = modules/wezterm
+	url = git@github.com:redjax/wezterm.git
