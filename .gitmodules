@@ -1,0 +1,27 @@
+[submodule "modules/neovim"]
+	path = modules/neovim
+	url = git@github.com:redjax/neovim.git
+[submodule "modules/dotfiles"]
+	path = modules/dotfiles
+	url = git@github.com:redjax/dotfiles.git
+[submodule "modules/docker_templates"]
+	path = modules/docker_templates
+	url = git@github.com:redjax/docker_templates.git
+[submodule "modules/PowershellProfile"]
+	path = modules/PowershellProfile
+	url = git@github.com:redjax/PowershellProfile.git
+[submodule "modules/system_scripts"]
+	path = modules/system_scripts
+	url = git@github.com:redjax/system_scripts.git
+[submodule "modules/wezterm"]
+	path = modules/wezterm
+	url = git@github.com:redjax/wezterm.git
+[submodule "modules/ansible_homelab"]
+	path = modules/ansible_homelab
+	url = git@github.com:redjax/ansible_homelab.git
+[submodule "modules/Terraform"]
+	path = modules/Terraform
+	url = git@github.com:redjax/Terraform.git
+[submodule "modules/redkb"]
+	path = modules/redkb
+	url = git@github.com:redjax/redkb.git
