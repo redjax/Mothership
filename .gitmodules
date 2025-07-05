@@ -25,3 +25,6 @@
 [submodule "modules/redkb"]
 	path = modules/redkb
 	url = git@github.com:redjax/redkb.git
+[submodule "modules/python_pkgs"]
+	path = modules/python_pkgs
+	url = git@github.com:redjax/python_pkgs.git
