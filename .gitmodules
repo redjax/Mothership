@@ -16,3 +16,6 @@
 [submodule "modules/wezterm"]
 	path = modules/wezterm
 	url = git@github.com:redjax/wezterm.git
+[submodule "modules/ansible_homelab"]
+	path = modules/ansible_homelab
+	url = git@github.com:redjax/ansible_homelab.git
