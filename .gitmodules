@@ -1,3 +1,6 @@
 [submodule "modules/neovim"]
 	path = modules/neovim
 	url = git@github.com:redjax/neovim.git
+[submodule "modules/dotfiles"]
+	path = modules/dotfiles
+	url = git@github.com:redjax/dotfiles.git
