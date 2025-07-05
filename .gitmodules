@@ -7,3 +7,6 @@
 [submodule "modules/docker_templates"]
 	path = modules/docker_templates
 	url = git@github.com:redjax/docker_templates.git
+[submodule "modules/PowershellProfile"]
+	path = modules/PowershellProfile
+	url = git@github.com:redjax/PowershellProfile.git
