@@ -22,3 +22,6 @@
 [submodule "modules/Terraform"]
 	path = modules/Terraform
 	url = git@github.com:redjax/Terraform.git
+[submodule "modules/redkb"]
+	path = modules/redkb
+	url = git@github.com:redjax/redkb.git
