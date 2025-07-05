@@ -1,5 +1,10 @@
 # Mothership <!-- omit in toc -->
 
+<!-- Repo header image -->
+<p align="center">
+  <img src=".assets/img/mothership.jpg" alt="Mothership repo img" width="300">
+</p>
+
 This is a "meta" repository for all of my machine scripts, configurations, & dotfiles.
 
 Each repository is a [Git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules), its own independent repository that is "joined" here in an overarching repository that groups my most important repositories for computer management.date
