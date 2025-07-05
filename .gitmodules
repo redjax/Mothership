@@ -35,5 +35,5 @@
 	path = modules/cookiecutter
 	url = git@github.com:redjax/cookiecutter.git
 [submodule "modules/awwesome-tools"]
-	path = modules/awwesome-tools
+	path = modules/awesome-tools
 	url = git@github.com:redjax/awesome-tools.git
