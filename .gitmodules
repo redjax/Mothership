@@ -37,3 +37,6 @@
 [submodule "modules/awwesome-tools"]
 	path = modules/awesome-tools
 	url = git@github.com:redjax/awesome-tools.git
+[submodule "modules/helix"]
+	path = modules/helix
+	url = git@github.com:redjax/helix.git
