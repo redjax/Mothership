@@ -40,3 +40,6 @@
 [submodule "modules/helix"]
 	path = modules/helix
 	url = git@github.com:redjax/helix.git
+[submodule "modules/emacs"]
+	path = modules/emacs
+	url = git@github.com:redjax/emacs.git
