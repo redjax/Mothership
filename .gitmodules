@@ -19,3 +19,6 @@
 [submodule "modules/ansible_homelab"]
 	path = modules/ansible_homelab
 	url = git@github.com:redjax/ansible_homelab.git
+[submodule "modules/Terraform"]
+	path = modules/Terraform
+	url = git@github.com:redjax/Terraform.git
