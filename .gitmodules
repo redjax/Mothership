@@ -25,3 +25,24 @@
 [submodule "modules/redkb"]
 	path = modules/redkb
 	url = git@github.com:redjax/redkb.git
+[submodule "modules/python_pkgs"]
+	path = modules/python_pkgs
+	url = git@github.com:redjax/python_pkgs.git
+[submodule "modules/PowershellModules"]
+	path = modules/PowershellModules
+	url = git@github.com:redjax/PowershellModules.git
+[submodule "modules/cookiecutter"]
+	path = modules/cookiecutter
+	url = git@github.com:redjax/cookiecutter.git
+[submodule "modules/awwesome-tools"]
+	path = modules/awesome-tools
+	url = git@github.com:redjax/awesome-tools.git
+[submodule "modules/helix"]
+	path = modules/helix
+	url = git@github.com:redjax/helix.git
+[submodule "modules/emacs"]
+	path = modules/emacs
+	url = git@github.com:redjax/emacs.git
+[submodule "modules/templates"]
+	path = modules/templates
+	url = git@github.com:redjax/templates.git
