@@ -8,21 +8,21 @@ jobs:
     name: Update submodules and create PR if needed
     runs-on: ubuntu-latest
     steps:
+      ## Use READ-ONLY token for checkout and submodules
       - uses: actions/checkout@v4
         with:
-          submodules: true
-          token: ${{ secrets.GH_PAT }}
+          submodules: false
+          token: ${{ secrets.GH_READONLY_PAT }}
 
-      ## Pre-authenticate pipeline for private repos
-      - name: Rewrite submodule URLs to include PAT and update submodules
+      - name: Rewrite submodule URLs to include READ-ONLY PAT and update submodules
         env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          GH_READONLY_PAT: ${{ secrets.GH_READONLY_PAT }}
         run: |
-          git config --global url."https://${GH_PAT}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+          git config --global url."https://${GH_READONLY_PAT}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
           git submodule sync
           git submodule update --init --recursive
 
-      ## Execute submodules update script
+      ## Run submodules update script
       - name: Run update submodules script
         run: |
           chmod +x ./scripts/update-submodules.sh
@@ -39,16 +39,12 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
-      # - name: Configure git to use GitHub token for HTTPS
-      #   run: |
-      #     git config --global url."https://${{ secrets.GH_PAT }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
-
-      ## Commit changes if 1 or more modules updated
+      ## Commit and create PR if there are changes, using READ-WRITE token
       - name: Commit and create PR if there are changes
         if: steps.changes.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GH_READWRITE_PAT }}
           commit-message: "chore(submodules): Update submodules"
           branch: fix/update-submodules
           title: "chore(submodules): Update submodules"
