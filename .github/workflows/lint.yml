@@ -1,0 +1,30 @@
+---
+name: Lint & format code
+
+on:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Format & lint ./scripts/updater Python project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Pythono
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install Ruff
+        run: pip install ruff
+
+      - name: Run Ruff linter on ./scripts/updater
+        working-directory: ./scripts/updater
+        run: |
+          ## Fix imports
+          ruff check . --select I --fix
+
+          ## Format code
+          ruff check . --fix
