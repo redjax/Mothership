@@ -5,6 +5,7 @@ log = logging.getLogger(__name__)
 
 from updater.main import ShellCommandRunner
 from updater.libs.setup import setup_package_logging
+from updater.commands import git_cmd
 
 
 def parse_args() -> argparse.Namespace:
@@ -17,6 +18,7 @@ def parse_args() -> argparse.Namespace:
 
     return args
 
+
 if __name__ == "__main__":
     args = parse_args()
     
@@ -26,11 +28,22 @@ if __name__ == "__main__":
     setup_package_logging(log_level=log_level, log_file=log_file)
     log.debug("DEBUG logging enabled")
     
-    runner: ShellCommandRunner = ShellCommandRunner(log_level="DEBUG")
+    runner: ShellCommandRunner = ShellCommandRunner()
     
+    log.info("Running git status -v")
     try:
-        exit_code = runner.run(["git", "status"])
+        exit_code = git_cmd.git_status("-v")
     except Exception as exc:
         log.error("Error running shell command", exc)
     
-    exit(exit_code)
+    if exit_code != 0:
+        log.warning("Failed checking repo status")
+    
+    log.info("Show repo remotes:")
+    try:
+        exit_code = git_cmd.git_list_remotes("-v")
+    except Exception as exc:
+        log.error("Error running shell command", exc)
+    
+    if exit_code != 0:
+        log.warning("Failed listing remotes")

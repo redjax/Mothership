@@ -30,5 +30,6 @@ def setup_package_logging(
         encoding="utf-8",
     )
     file_handler.setFormatter(file_formatter)
+    file_handler.setLevel("DEBUG")
 
     logger.addHandler(file_handler)

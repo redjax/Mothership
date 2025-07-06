@@ -32,7 +32,7 @@ class ShellCommandRunner:
             self.log.addHandler(console_handler)
 
     def run(self, command: List[str], cwd: Optional[str] = None) -> int:
-        self.log.info(f"Running command: {' '.join(command)}")
+        self.log.debug(f"Running command: {' '.join(command)}")
         
         try:
             result = subprocess.run(
