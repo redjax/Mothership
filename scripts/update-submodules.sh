@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo
+
 if ! command -v git &>/dev/null; then
   echo "git is not installed."
   exit 1

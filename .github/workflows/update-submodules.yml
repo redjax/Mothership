@@ -8,20 +8,25 @@ jobs:
     name: Update submodules and create PR if needed
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v6
+      - uses: actions/checkout@v4
         with:
-          ## Cache last uv install
-          enable-cache: true
-          ## Or pin a specific version
-          # version: "0.7.13"
+          submodules: true
+          token: ${{ secrets.GH_PAT }}
+
+      ## Pre-authenticate pipeline for private repos
+      - name: Rewrite submodule URLs to include PAT and update submodules
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config --global url."https://${GH_PAT}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+          git submodule sync
+          git submodule update --init --recursive
 
       ## Execute submodules update script
-      - name: Run update script
-        run: uv run scripts/update_project.py
+      - name: Run update submodules script
+        run: |
+          chmod +x ./scripts/update-submodules.sh
+          ./scripts/update-submodules.sh
 
       ## Check for updated modules
       - name: Check for changes in ./modules
@@ -34,12 +39,16 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
+      # - name: Configure git to use GitHub token for HTTPS
+      #   run: |
+      #     git config --global url."https://${{ secrets.GH_PAT }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+
       ## Commit changes if 1 or more modules updated
       - name: Commit and create PR if there are changes
         if: steps.changes.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_PAT }}
           commit-message: "chore(submodules): Update submodules"
           branch: fix/update-submodules
           title: "chore(submodules): Update submodules"
