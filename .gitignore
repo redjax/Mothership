@@ -1,0 +1,35 @@
+## OS-generated files
+.DS_Store
+Thumbs.db
+
+## Editor directories and files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+# Allow code workspaces
+!*.code-workspace
+
+## Logs
+*.log
+
+## Dependency directories
+node_modules/
+venv/
+.venv/
+.env
+*.env
+
+## Build artifacts
+dist/
+build/
+out/
+coverage/
+
+## KEEP EVERYTHING BELOW AT THE BOTTOM
+
+## Allow example files
+!*example*.*
+!*.*example*
+!*.*example*.*
