@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_PAT }}
 
       ## Execute submodules update script
       - name: Run update submodules script
@@ -30,16 +30,16 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Configure git to use GitHub token for HTTPS
-        run: |
-          git config --global url."https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+      # - name: Configure git to use GitHub token for HTTPS
+      #   run: |
+      #     git config --global url."https://${{ secrets.GH_PAT }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
 
       ## Commit changes if 1 or more modules updated
       - name: Commit and create PR if there are changes
         if: steps.changes.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_PAT }}
           commit-message: "chore(submodules): Update submodules"
           branch: fix/update-submodules
           title: "chore(submodules): Update submodules"
