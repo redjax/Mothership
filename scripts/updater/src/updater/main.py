@@ -5,6 +5,11 @@ from typing import List, Optional
 
 from updater.libs.setup import setup_package_logging
 
+log = logging.getLogger(__name__)
+
+__all__ = ["ShellCommandRunner"]
+
+
 class ShellCommandRunner:
     def __init__(self, log_level="INFO"):
         self.log = logging.getLogger("ShellCommandRunner")
