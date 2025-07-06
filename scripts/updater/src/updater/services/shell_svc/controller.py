@@ -1,6 +1,8 @@
+from __future__ import annotations
+
+import logging
 import logging.handlers
 import subprocess
-import logging
 from typing import List, Optional
 
 from updater.libs.setup import setup_package_logging

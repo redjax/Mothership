@@ -1,12 +1,13 @@
-import logging
+from __future__ import annotations
+
 import argparse
+import logging
 
 log = logging.getLogger(__name__)
 
-from updater.main import ShellCommandRunner
-from updater.libs.setup import setup_package_logging
 from updater.commands import git_cmd
-
+from updater.libs.setup import setup_package_logging
+from updater.main import ShellCommandRunner
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser("updater", description="Mothership Repo submodule updater")
