@@ -30,20 +30,27 @@ if __name__ == "__main__":
     
     runner: ShellCommandRunner = ShellCommandRunner()
     
-    log.info("Running git status -v")
+    ## Pull & update all submodules
     try:
-        exit_code = git_cmd.git_status("-v")
+        submodule_update_success = git_cmd.prefab.update_git_submodules()
     except Exception as exc:
-        log.error("Error running shell command", exc)
+        log.error("Failed updating submodules.", exc)
+        exit(1)
     
-    if exit_code != 0:
-        log.warning("Failed checking repo status")
+    # log.info("Running git status -v")
+    # try:
+    #     exit_code = git_cmd.git_status("-v")
+    # except Exception as exc:
+    #     log.error("Error running shell command", exc)
     
-    log.info("Show repo remotes:")
-    try:
-        exit_code = git_cmd.git_list_remotes("-v")
-    except Exception as exc:
-        log.error("Error running shell command", exc)
+    # if exit_code != 0:
+    #     log.warning("Failed checking repo status")
     
-    if exit_code != 0:
-        log.warning("Failed listing remotes")
+    # log.info("Show repo remotes:")
+    # try:
+    #     exit_code = git_cmd.git_list_remotes("-v")
+    # except Exception as exc:
+    #     log.error("Error running shell command", exc)
+    
+    # if exit_code != 0:
+    #     log.warning("Failed listing remotes")
