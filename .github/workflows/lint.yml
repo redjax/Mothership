@@ -28,3 +28,15 @@ jobs:
 
           ## Format code
           ruff check . --fix
+
+      - name: Commit & create PR with lint fixes
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(lint): Lint & format updater Python package."
+          branch: lint-fixes/${{ github.run_id }}
+          title: "chore(lint): Lint & format updater Python package."
+          body: |
+            This PR applies automated linting and formatting to the `scripts/updater` Python package using Ruff.
+            - Imports sorted
+            - Code formatted and linted
