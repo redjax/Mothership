@@ -13,6 +13,15 @@ jobs:
           submodules: true
           token: ${{ secrets.GH_PAT }}
 
+      ## Pre-authenticate pipeline for private repos
+      - name: Rewrite submodule URLs to include PAT and update submodules
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config --global url."https://${GH_PAT}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+          git submodule sync
+          git submodule update --init --recursive
+
       ## Execute submodules update script
       - name: Run update submodules script
         run: |
