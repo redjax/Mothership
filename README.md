@@ -44,6 +44,12 @@ Alternatively, you can clone & initialize in 1 step:
 git clone --recurse-submodules <meta-repo-url>
 ```
 
+If you want to always pull submodule changes when they are updated, set the repository's `submodule.recurse` to `true`:
+
+```bash
+git config submodule.recurse true
+```
+
 ## Submodules
 
 Table of the submodules found in the [modules/ directory](./modules/)
