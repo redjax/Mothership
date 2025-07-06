@@ -46,7 +46,8 @@ jobs:
         with:
           token: ${{ secrets.GH_READWRITE_PAT }}
           commit-message: "chore(submodules): Update submodules"
-          branch: fix/update-submodules
+          branch: chore/update-submodules
+          base: main
           title: "chore(submodules): Update submodules"
           body: "Pulled changes for each git submodule"
           add-paths: ./modules
