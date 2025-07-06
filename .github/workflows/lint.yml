@@ -6,20 +6,24 @@ on:
 
 jobs:
   lint:
+    ## Ruff lint scripts/updater
     name: Format & lint ./scripts/updater Python project
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      ## Install Python
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.12"
 
+      ## Install ruff
       - name: Install Ruff
         run: pip install ruff
 
+      ## Run ruff on ./scripts/updater
       - name: Run Ruff linter on ./scripts/updater
         working-directory: ./scripts/updater
         run: |
@@ -29,6 +33,7 @@ jobs:
           ## Format code
           ruff check . --fix
 
+      ## Commit changes to new branch & open PR
       - name: Commit & create PR with lint fixes
         uses: peter-evans/create-pull-request@v5
         with:
