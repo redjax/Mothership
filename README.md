@@ -6,6 +6,7 @@ Each repository is a [Git submodule](https://git-scm.com/book/en/v2/Git-Tools-Su
 
 ## Table of Contents <!-- omit in toc -->
 
+- [Purpose](#purpose)
 - [Usage](#usage)
 - [Submodules](#submodules)
   - [Updating submodules](#updating-submodules)
@@ -15,6 +16,12 @@ Each repository is a [Git submodule](https://git-scm.com/book/en/v2/Git-Tools-Su
   - [Move a submodule in the repository](#move-a-submodule-in-the-repository)
 - [Troubleshooting](#troubleshooting)
 - [Links](#links)
+
+## Purpose
+
+Honestly, I'm not quite sure yet. I'm testing out submodules, and thought it might be convenient to have all the repos I clone on my main machine in one "mothership" configuration. Maybe I'll write scripts to keep this up to date as a sort of backup, maybe it will just serve as a map to the other repositories, maybe it'll actually be useful!
+
+I'll probably edit this section to give the project a focus at some point.
 
 ## Usage
 
