@@ -11,17 +11,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v6
-        with:
-          ## Cache last uv install
-          enable-cache: true
-          ## Or pin a specific version
-          # version: "0.7.13"
-
       ## Execute submodules update script
-      - name: Run update script
-        run: uv run scripts/update_project.py
+      - name: Run update submodules script
+        run: |
+          chmod +x ./scripts/update-submodules.sh
+          ./scripts/update-submodules.sh
 
       ## Check for updated modules
       - name: Check for changes in ./modules
