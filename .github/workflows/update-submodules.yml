@@ -8,8 +8,10 @@ jobs:
     name: Update submodules and create PR if needed
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       ## Execute submodules update script
       - name: Run update submodules script
@@ -27,6 +29,10 @@ jobs:
           else
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
+
+      - name: Configure git to use GitHub token for HTTPS
+        run: |
+          git config --global url."https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
 
       ## Commit changes if 1 or more modules updated
       - name: Commit and create PR if there are changes
