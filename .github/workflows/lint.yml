@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Pythono
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.12"
@@ -24,7 +24,7 @@ jobs:
         working-directory: ./scripts/updater
         run: |
           ## Fix imports
-          ruff check . --select I --fix
+          # ruff check . --select I --fix
 
           ## Format code
           ruff check . --fix
