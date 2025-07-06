@@ -6,6 +6,7 @@ Each repository is a [Git submodule](https://git-scm.com/book/en/v2/Git-Tools-Su
 
 ## Table of Contents <!-- omit in toc -->
 
+- [Purpose](#purpose)
 - [Usage](#usage)
 - [Submodules](#submodules)
   - [Updating submodules](#updating-submodules)
@@ -15,6 +16,12 @@ Each repository is a [Git submodule](https://git-scm.com/book/en/v2/Git-Tools-Su
   - [Move a submodule in the repository](#move-a-submodule-in-the-repository)
 - [Troubleshooting](#troubleshooting)
 - [Links](#links)
+
+## Purpose
+
+Honestly, I'm not quite sure yet. I'm testing out submodules, and thought it might be convenient to have all the repos I clone on my main machine in one "mothership" configuration. Maybe I'll write scripts to keep this up to date as a sort of backup, maybe it will just serve as a map to the other repositories, maybe it'll actually be useful!
+
+I'll probably edit this section to give the project a focus at some point.
 
 ## Usage
 
@@ -33,6 +40,24 @@ git clone --recurse-submodules <meta-repo-url>
 ```
 
 ## Submodules
+
+| Name | Repository | Description |
+| ---- | ---------- | ----------- |
+| [`ansible_homelab`](./modules/ansible_homelab/) | https://github.com/redjax/ansible_homelab | My Ansible monorepo, with collections, roles, & playbooks for managing my homelab. |
+| [`awesome-tools`](./modules/awesome-tools/) | https://github.com/redjax/awesome-tools | An Awesomelist I maintain of tools & utilities I think are useful. |
+| [`cookiecutter`](./modules/cookiecutter/) | https://github.com/redjax/ | My cookiecutter templates. |
+| [`docker_templates`](./modules/docker_templates/) | https://github.com/redjax/ | A large repository containing many Docker/Docker Compose containers for services I've self-hosted. |
+| [`dotfiles`](./modules/dotfiles/) | https://github.com/redjax/dotfiles | My Linux dotfiles, managed with Chezmoi. |
+| [`emacs`](./modules/emacs/) | https://github.com/redjax/emacs | My Emacs configuration. |
+| [`helix`](./modules/helix/) | https://github.com/redjax/helix | My Helix editor configuration. |
+| [`neovim`](./modules/neovim/) | https://github.com/redjax/neovim | A repository containing my neovim configuration(s), plus management scripts & cross-platform support. |
+| [`PowershellModules`](./modules/PowershellModules/) | https://github.com/redjax/PowershellModules | Powershell modules I've written for work or personal use. I don't generally publish them, I just copy/paste or download them to my $PATH. |
+| [`PowershellProfile`](./modules/PowershellProfile/) | https://github.com/redjax/PowershellProfile | My Powershell profile with custom modules & functions. |
+| [`python_pkgs`](./modules/python_pkgs/) | https://github.com/redjax/python_pkgs | A reference repository for various Python libs & utilities. |
+| [`system_scripts`](./modules/system_scripts/) | https://github.com/redjax/system_scripts | A repository I've been adding to for many years (despite what the commit history shows), contains many scripts I've created or straight up copied (where legal, thank you to everyone who figured things out before me!) for multiple versions of Linux & Windows. |
+| [`templates`](./modules/templates/) | https://github.com/redjax/templates | My templates monorepo, where I store copy/paste-able versions of pipelines & other code. |
+| [`Terraform`](./modules/Terraform/) | https://github.com/redjax/Terraform | My Terraform monorepo, where I store Terraform modules I write for myself. |
+| [`wezterm`](./modules/wezterm/) | https://github.com/redjax/wezterm | My Wezterm configuration. |
 
 ### Updating submodules
 
