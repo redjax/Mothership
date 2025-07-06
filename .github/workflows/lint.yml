@@ -24,7 +24,7 @@ jobs:
         working-directory: ./scripts/updater
         run: |
           ## Fix imports
-          # ruff check . --select I --fix
+          ruff check . --select I --fix
 
           ## Format code
           ruff check . --fix
