@@ -20,6 +20,7 @@ Each repository is a [Git submodule](https://git-scm.com/book/en/v2/Git-Tools-Su
   - [Change submodule remote](#change-submodule-remote)
   - [Move a submodule in the repository](#move-a-submodule-in-the-repository)
 - [Troubleshooting](#troubleshooting)
+  - [Submodule updates in pipeline not applied locally](#submodule-updates-in-pipeline-not-applied-locally)
 - [Links](#links)
 
 ## Purpose
@@ -128,7 +129,13 @@ git commit -m "Move submodule to new path"
 
 ## Troubleshooting
 
-...
+### Submodule updates in pipeline not applied locally
+
+When the [pipeline that updates submodules](./.github/workflows/update-submodules.yml) runs and pulls changes on the remote, you need to also pull the submodule changes locally. This can be done with `git pull --recurse-submodules`, or you can set the local repo to always pull submodule changes on a `git pull` with:
+
+```bash
+git config submodule.recurse true
+```
 
 ## Links
 
