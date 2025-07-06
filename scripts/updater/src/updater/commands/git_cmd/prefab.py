@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 
 from updater.main import ShellCommandRunner

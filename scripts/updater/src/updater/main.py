@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import logging
 
-from updater.services.shell_svc import ShellCommandRunner
-from updater.libs.setup import setup_package_logging
 from updater.commands import git_cmd
+from updater.libs.setup import setup_package_logging
+from updater.services.shell_svc import ShellCommandRunner
 
 log = logging.getLogger(__name__)
         

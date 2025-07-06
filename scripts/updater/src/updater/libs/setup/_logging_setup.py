@@ -1,7 +1,8 @@
+from __future__ import annotations
+
 import logging
 import logging.handlers
 from pathlib import Path
-
 
 __all__ = ["setup_package_logging"]
 
