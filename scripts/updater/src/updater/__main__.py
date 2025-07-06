@@ -36,6 +36,8 @@ if __name__ == "__main__":
     except Exception as exc:
         log.error("Failed updating submodules.", exc)
         exit(1)
+        
+    log.info("Updated submodules. You may see errors from the shell's stdout stream, but if you're seeing this, the script exited successfully anyway.")
     
     # log.info("Running git status -v")
     # try:
