@@ -6,7 +6,7 @@ Thumbs.db
 *.swp
 *.swo
 *~
-.vscode/
+.vscode/*
 .idea/
 # Allow code workspaces
 !*.code-workspace
@@ -69,3 +69,8 @@ MANIFEST
 !*example*.*
 !*.*example*
 !*.*example*.*
+
+## Don't ignore certain .vscode files
+!.vscode/
+!.vscode/settings.json
+!.vscode/*.code-workspace
