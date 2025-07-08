@@ -34,15 +34,15 @@ I'll probably edit this section to give the project a focus at some point.
 Clone the repository and initialize submodules:
 
 ```bash
-git clone git@github.com:redjax/MetaRepo # or https://github.com/redjax/MetaRepo.git
-cd MetaRepo
+git clone git@github.com:redjax/Mothership # or https://github.com/redjax/Mothership.git
+cd Mothership
 git submodule update --init --recursive
 ```
 
 Alternatively, you can clone & initialize in 1 step:
 
 ```bash
-git clone --recurse-submodules <meta-repo-url>
+git clone --recurse-submodules <mothership-repo-url>
 ```
 
 If you want to always pull submodule changes when they are updated, set the repository's `submodule.recurse` to `true`:
