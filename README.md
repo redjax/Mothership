@@ -95,8 +95,6 @@ git submodule foreach git pull origin main
 
 ### Adding submodules
 
-###Add a submodule
-
 ```bash
 git submodule add https://github.com/youruser/repo_name.git local/path/to/repo_name
 ```
