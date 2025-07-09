@@ -25,9 +25,6 @@
 [submodule "modules/PowershellModules"]
 	path = modules/PowershellModules
 	url = https://github.com/redjax/PowershellModules.git
-[submodule "modules/awwesome-tools"]
-	path = modules/awesome-tools
-	url = https://github.com/redjax/awesome-tools.git
 [submodule "modules/helix"]
 	path = modules/helix
 	url = https://github.com/redjax/helix.git
