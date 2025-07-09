@@ -24,13 +24,13 @@ jobs:
           ## Replace current timestamp with new one
           sed -i "s/<!--LAST_UPDATED-->.*<!--END_LAST_UPDATED-->/<!--LAST_UPDATED-->$timestamp<!--END_LAST_UPDATED-->/" README.md
 
-      - name: Commit and push changes
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
-          git commit -m "chore: update last submodule metadata refresh timestamp [skip ci]" || exit 0
-          git push
-        env:
-          # Use a PAT if you need to push to protected branches, otherwise GITHUB_TOKEN is fine
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Pull Request for README timestamp update
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update last submodule metadata refresh timestamp [skip ci]"
+          branch: chore/update-timestamp
+          base: main
+          title: "chore: update last submodule metadata refresh timestamp"
+          body: "Automated update of last submodule metadata refresh timestamp."
+          add-paths: README.md
