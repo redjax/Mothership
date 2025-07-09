@@ -31,9 +31,6 @@
 [submodule "modules/PowershellModules"]
 	path = modules/PowershellModules
 	url = https://github.com/redjax/PowershellModules.git
-[submodule "modules/cookiecutter"]
-	path = modules/cookiecutter
-	url = https://github.com/redjax/cookiecutter.git
 [submodule "modules/awwesome-tools"]
 	path = modules/awesome-tools
 	url = https://github.com/redjax/awesome-tools.git
