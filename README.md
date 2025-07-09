@@ -70,8 +70,6 @@ Table of the submodules found in the [modules/ directory](./modules/)
 | Name | Repository | Description |
 | ---- | ---------- | ----------- |
 | ansible_homelab | https://github.com/redjax/ansible_homelab | My Ansible monorepo, with collections, roles, & playbooks for managing my homelab. |
-| awesome-tools | https://github.com/redjax/awesome-tools | An Awesomelist I maintain of tools & utilities I think are useful. |
-| cookiecutter | https://github.com/redjax/ | My cookiecutter templates. |
 | docker_templates | https://github.com/redjax/ | A large repository containing many Docker/Docker Compose containers for services I've self-hosted. |
 | dotfiles | https://github.com/redjax/dotfiles | My Linux dotfiles, managed with Chezmoi. |
 | emacs | https://github.com/redjax/emacs | My Emacs configuration. |
@@ -79,7 +77,6 @@ Table of the submodules found in the [modules/ directory](./modules/)
 | neovim | https://github.com/redjax/neovim | A repository containing my neovim configuration(s), plus management scripts & cross-platform support. |
 | PowershellModules | https://github.com/redjax/PowershellModules | Powershell modules I've written for work or personal use. I don't generally publish them, I just copy/paste or download them to my $PATH. |
 | PowershellProfile | https://github.com/redjax/PowershellProfile | My Powershell profile with custom modules & functions. |
-| python_pkgs | https://github.com/redjax/python_pkgs | A reference repository for various Python libs & utilities. |
 | system_scripts | https://github.com/redjax/system_scripts | A repository I've been adding to for many years (despite what the commit history shows), contains many scripts I've created or straight up copied (where legal, thank you to everyone who figured things out before me!) for multiple versions of Linux & Windows. |
 | templates | https://github.com/redjax/templates | My templates monorepo, where I store copy/paste-able versions of pipelines & other code. |
 | Terraform | https://github.com/redjax/Terraform | My Terraform monorepo, where I store Terraform modules I write for myself. |
