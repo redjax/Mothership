@@ -22,9 +22,9 @@
 [submodule "modules/Terraform"]
 	path = modules/Terraform
 	url = https://github.com/redjax/Terraform.git
-[submodule "modules/redkb"]
-	path = modules/redkb
-	url = https://github.com/redjax/redkb.git
+[submodule "modules/python_pkgs"]
+	path = modules/python_pkgs
+	url = https://github.com/redjax/python_pkgs.git
 [submodule "modules/PowershellModules"]
 	path = modules/PowershellModules
 	url = https://github.com/redjax/PowershellModules.git
