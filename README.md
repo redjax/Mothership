@@ -104,7 +104,7 @@ git submodule add https://github.com/youruser/repo_name.git local/path/to/repo_n
 ### Removing submodules
 
 ```bash
-git submodule deinit local/path/to/repo_name
+git submodule deinit -f local/path/to/repo_name
 git rm local/path/to/repo_name
 rm -rf .git/modules/local/path/to/repo_name
 
