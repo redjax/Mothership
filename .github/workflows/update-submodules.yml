@@ -2,7 +2,7 @@ name: Update repository submodules
 
 on:
   ## Manual trigger
-  # workflow_dispatch:
+  workflow_dispatch:
   ## Scheduled trigger
   schedule:
     - cron: "0 0,12 * * *"
