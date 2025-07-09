@@ -1,0 +1,36 @@
+name: Update README Timestamp
+
+on:
+  workflow_run:
+    ## Set to the display name of the other pipeline, i.e. the "name: ..." value
+    workflows: ["Update repository submodules"]
+    ## Run after other pipeline completes
+    types:
+      - completed
+
+jobs:
+  update-timestamp:
+    ## Run only if other pipeline was successful
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update README last updated timestamp
+        run: |
+          timestamp=$(date -u +"%Y-%m-%d %H:%M UTC")
+
+          ## Replace current timestamp with new one
+          sed -i "s/<!--LAST_UPDATED-->.*<!--END_LAST_UPDATED-->/<!--LAST_UPDATED-->$timestamp<!--END_LAST_UPDATED-->/" README.md
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "chore: update last submodule metadata refresh timestamp [skip ci]" || exit 0
+          git push
+        env:
+          # Use a PAT if you need to push to protected branches, otherwise GITHUB_TOKEN is fine
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
