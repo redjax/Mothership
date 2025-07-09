@@ -43,15 +43,33 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
+      ## Commit submodule changes if there are any
+      - name: Commit submodule changes
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(submodules): Update submodules"
+
+      - name: Update README last updated timestamp
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          timestamp=$(date -u +"%Y-%m-%d %H:%M UTC")
+          sed -i "s/<!--LAST_UPDATED-->.*<!--END_LAST_UPDATED-->/<!--LAST_UPDATED-->${timestamp}<!--END_LAST_UPDATED-->/" README.md
+          git add README.md
+          git commit -m "chore: update last submodule metadata refresh timestamp"
+
       ## Commit and create PR if there are changes, using READ-WRITE token
       - name: Commit and create PR if there are changes
         if: steps.changes.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GH_READWRITE_PAT }}
-          commit-message: "chore(submodules): Update submodules"
+          commit-message: "chore(submodules): Update submodules and refresh timestamp"
           branch: chore/update-submodules
           base: main
           title: "chore(submodules): Update submodules"
-          body: "Pulled changes for each git submodule"
-          add-paths: ./modules
+          body: "Pulled changes for each git submodule and updated metadata refresh timestamp."
+          add-paths: |
+            ./modules
+            README.md
