@@ -15,6 +15,25 @@
   </tr>
 </table>
 
+<!-- Git Badges -->
+<p align="center">
+  <a href="https://github.com/redjax/Mothership">
+    <img alt="Created At" src="https://img.shields.io/github/created-at/redjax/Mothership">
+  </a>  
+  <a href="https://github.com/redjax/Mothership/commit">
+    <img alt="Last Commit" src="https://img.shields.io/github/last-commit/redjax/Mothership">
+  </a>
+  <a href="https://github.com/redjax/Mothership/commit">
+    <img alt="Commits this year" src="https://img.shields.io/github/commit-activity/y/redjax/Mothership">
+  </a>
+  <a href="https://github.com/redjax/Mothership">
+    <img alt="Repo size" src="https://img.shields.io/github/repo-size/redjax/Mothership">
+  </a>
+  <!-- ![GitHub Latest Release](https://img.shields.io/github/release-date/redjax/Mothership) -->
+  <!-- ![GitHub commits since latest release](https://img.shields.io/github/commits-since/redjax/Mothership/latest) -->
+  <!-- ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/redjax/Mothership/tests.yml) -->
+</p>
+
 ---
 
 This is a "meta" repository for all of my machine scripts, configurations, & dotfiles.
@@ -77,7 +96,7 @@ Table of the submodules found in the [modules/ directory](./modules/)
 | neovim | https://github.com/redjax/neovim | A repository containing my neovim configuration(s), plus management scripts & cross-platform support. |
 | PowershellModules | https://github.com/redjax/PowershellModules | Powershell modules I've written for work or personal use. I don't generally publish them, I just copy/paste or download them to my $PATH. |
 | PowershellProfile | https://github.com/redjax/PowershellProfile | My Powershell profile with custom modules & functions. |
-| system_scripts | https://github.com/redjax/system_scripts | A repository I've been adding to for many years (despite what the commit history shows), contains many scripts I've created or straight up copied (where legal, thank you to everyone who figured things out before me!) for multiple versions of Linux & Windows. |
+| system_scripts | https://github.com/redjax/Mothership | A repository I've been adding to for many years (despite what the commit history shows), contains many scripts I've created or straight up copied (where legal, thank you to everyone who figured things out before me!) for multiple versions of Linux & Windows. |
 | templates | https://github.com/redjax/templates | My templates monorepo, where I store copy/paste-able versions of pipelines & other code. |
 | Terraform | https://github.com/redjax/Terraform | My Terraform monorepo, where I store Terraform modules I write for myself. |
 | wezterm | https://github.com/redjax/wezterm | My Wezterm configuration. |
