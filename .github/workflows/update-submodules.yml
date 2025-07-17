@@ -11,6 +11,9 @@ jobs:
   update-submodules:
     name: Update submodules and create PR if needed
     runs-on: ubuntu-latest
+    outputs:
+      ## Output PR number for auto-merge job if changes are found
+      pr_number: ${{ steps.create_pr.outputs.pull-request-number }}
     steps:
       ## Use READ-ONLY token for checkout and submodules
       - uses: actions/checkout@v4
@@ -61,6 +64,7 @@ jobs:
 
       ## Commit and create PR if there are changes, using READ-WRITE token
       - name: Commit and create PR if there are changes
+        id: create_pr
         if: steps.changes.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
@@ -73,3 +77,17 @@ jobs:
           add-paths: |
             ./modules
             README.md
+
+  auto-merge:
+    runs-on: ubuntu-latest
+    needs: update-submodules
+    if: needs.update-submodules.outputs.pr_number != ''
+    steps:
+      - name: Install GitHub CLI
+        run: sudo apt-get update && sudo apt-get install -y gh
+
+      - name: Auto-merge PR
+        env:
+          GH_TOKEN: ${{ secrets.GH_READWRITE_PAT }}
+        run: |
+          gh pr merge ${{ needs.update-submodules.outputs.pr_number }} --auto --squash
