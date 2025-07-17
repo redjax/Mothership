@@ -99,18 +99,26 @@ jobs:
         run: |
           gh pr merge ${{ needs.update-submodules.outputs.pr_number }} --auto --squash
 
+      - name: Check if PR merged
+        id: pr-status
+        env:
+          GH_TOKEN: ${{ secrets.GH_READWRITE_PAT }}
+        run: |
+          merged=$(gh pr view ${{ needs.update-submodules.outputs.pr_number }} --json merged -q '.merged')
+          echo "merged=$merged" >> $GITHUB_OUTPUT
+
       - name: Delete branch if PR merged successfully
         if: steps.pr-status.outputs.merged == 'true'
         env:
           GH_TOKEN: ${{ secrets.GH_READWRITE_PAT }}
         run: |
-          echo "Deleting branch chore/demo-update because PR was merged"
-          gh api -X DELETE repos/$GITHUB_REPOSITORY/git/refs/heads/chore/demo-update
+          echo "Deleting branch chore/update-submodules because PR was merged"
+          gh api -X DELETE repos/$GITHUB_REPOSITORY/git/refs/heads/chore/update-submodules || true
           if [[ $? != 0 ]]; then
-            echo "[ERROR] Failed to delete branch chore/demo-update"
+            echo "[ERROR] Failed to delete branch chore/update-submodules"
             exit $?
           else
-            echo "Deleted branch chore/demo-update"
+            echo "Deleted branch chore/update-submodules"
           fi
 
           exit 0
