@@ -83,6 +83,12 @@ jobs:
     needs: update-submodules
     if: needs.update-submodules.outputs.pr_number != ''
     steps:
+      ## Use READ-ONLY token for checkout and submodules
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+          token: ${{ secrets.GH_READONLY_PAT }}
+
       - name: Install GitHub CLI
         run: sudo apt-get update && sudo apt-get install -y gh
 
