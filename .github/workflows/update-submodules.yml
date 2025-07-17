@@ -102,10 +102,14 @@ jobs:
       - name: Check if PR merged
         id: pr-status
         env:
-          GH_TOKEN: ${{ secrets.GH_READWRITE_PAT }}
+          GH_TOKEN: ${{ secrets.GH_READONLY_PAT }}
         run: |
-          merged=$(gh pr view ${{ needs.update-submodules.outputs.pr_number }} --json merged -q '.merged')
-          echo "merged=$merged" >> $GITHUB_OUTPUT
+          state=$(gh pr view ${{ needs.update-submodules.outputs.pr_number }} --json state -q '.state')
+          if [ "$state" = "MERGED" ]; then
+            echo "merged=true" >> $GITHUB_OUTPUT
+          else
+            echo "merged=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Delete branch if PR merged successfully
         if: steps.pr-status.outputs.merged == 'true'
