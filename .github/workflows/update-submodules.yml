@@ -78,7 +78,7 @@ jobs:
             ./modules
             README.md
 
-  auto-merge:
+  auto-merge-pr:
     runs-on: ubuntu-latest
     needs: update-submodules
     if: needs.update-submodules.outputs.pr_number != ''
