@@ -79,6 +79,7 @@ jobs:
             README.md
 
   auto-merge-pr:
+    name: Auto-merge PR with pipeline changes
     runs-on: ubuntu-latest
     needs: update-submodules
     if: needs.update-submodules.outputs.pr_number != ''
