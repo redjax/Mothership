@@ -34,3 +34,6 @@
 [submodule "modules/templates"]
 	path = modules/templates
 	url = https://github.com/redjax/templates.git
+[submodule "modules/syst"]
+	path = modules/syst
+	url = https://github.com/redjax/syst.git
