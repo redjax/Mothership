@@ -37,3 +37,6 @@
 [submodule "modules/syst"]
 	path = modules/syst
 	url = https://github.com/redjax/syst.git
+[submodule "modules/Toolbelt"]
+	path = modules/Toolbelt
+	url = https://github.com/redjax/Toolbelt.git
