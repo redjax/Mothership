@@ -19,7 +19,7 @@
 <p align="center">
   <a href="https://github.com/redjax/Mothership">
     <img alt="Created At" src="https://img.shields.io/github/created-at/redjax/Mothership">
-  </a>  
+  </a>
   <a href="https://github.com/redjax/Mothership/commit">
     <img alt="Last Commit" src="https://img.shields.io/github/last-commit/redjax/Mothership">
   </a>
@@ -94,6 +94,7 @@ Table of the submodules found in the [modules/ directory](./modules/)
 | emacs             | https://github.com/redjax/emacs             | My Emacs configuration.                                                                                                                                                                                                                                            |
 | helix             | https://github.com/redjax/helix             | My Helix editor configuration.                                                                                                                                                                                                                                     |
 | neovim            | https://github.com/redjax/neovim            | A repository containing my neovim configuration(s), plus management scripts & cross-platform support.                                                                                                                                                              |
+| Notetkr           | https://github.com/redjax/Notetkr           | Go app for taking notes/journal entries in the terminal.                                                                                                                                                                                                           |
 | PowershellModules | https://github.com/redjax/PowershellModules | Powershell modules I've written for work or personal use. I don't generally publish them, I just copy/paste or download them to my $PATH.                                                                                                                          |
 | PowershellProfile | https://github.com/redjax/PowershellProfile | My Powershell profile with custom modules & functions.                                                                                                                                                                                                             |
 | syst              | https://github.com/redjax/syst              | A "swiss army knife" CLI utility written in Go.                                                                                                                                                                                                                    |
@@ -171,3 +172,4 @@ git config submodule.recurse true
 - [FreeCodeCamp: How to use Git submodules - explained with examples](https://www.freecodecamp.org/news/how-to-use-git-submodules/)
 - [Atlassian docs: Git submodules](https://www.atlassian.com/git/tutorials/git-submodule)
 - [HowToGeek: What are submodules, and how do you use them?](https://www.howtogeek.com/devops/what-are-git-submodules-and-how-do-you-use-them/)
+
