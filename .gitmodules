@@ -40,3 +40,6 @@
 [submodule "modules/Toolbelt"]
 	path = modules/Toolbelt
 	url = https://github.com/redjax/Toolbelt.git
+[submodule "modules/Notetkr"]
+	path = modules/Notetkr
+	url = https://github.com/redjax/Notetkr.git
