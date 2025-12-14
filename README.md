@@ -1,4 +1,4 @@
-# Mothership <!-- omit in toc -->
+# 🛸 Mothership <!-- omit in toc -->
 
 <!-- Repo header image -->
 <p align="center">
@@ -36,9 +36,9 @@
 
 ---
 
-This is a "meta" repository for all of my machine scripts, configurations, & dotfiles.
+Mothership is a "meta" repository that brings together my core machine scripts, configurations, and dotfiles. Each project is a [Git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules), an independent repository connected here to form a unified hub for managing my development environment.
 
-Each repository is a [Git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules), its own independent repository that is "joined" here in an overarching repository that groups my most important repositories for computer management.
+Clone this repository, then pull in the "fleet" with `git submodule update --init --recursive`.
 
 ## Table of Contents <!-- omit in toc -->
 
