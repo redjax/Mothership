@@ -1,4 +1,4 @@
-# Mothership <!-- omit in toc -->
+# 🛸 Mothership <!-- omit in toc -->
 
 <!-- Repo header image -->
 <p align="center">
