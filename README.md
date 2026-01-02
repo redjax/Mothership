@@ -46,6 +46,7 @@ Clone this repository, then pull in the "fleet" with `git submodule update --ini
 - [Usage](#usage)
 - [Submodules](#submodules)
   - [Deploying submodules](#deploying-submodules)
+    - [Python deployment script](#python-deployment-script)
   - [Updating submodules](#updating-submodules)
   - [Adding submodules](#adding-submodules)
   - [Removing submodules](#removing-submodules)
@@ -132,6 +133,33 @@ You can also change the remote back to the module's original repository. For exa
 git remote set-url origin "git@github.com:redjax/git_dir.git"
 git checkout main
 ```
+
+#### Python deployment script
+
+The [`do_deployment.py` script](./scripts/deploy/do_deployment.py) can clone repositories to paths on the host, automating the process of cloning out of the Mothership repository and optionally setting the remote back to the submodule's origin.
+
+Start by creating a `deploy.json` file (see the [`example.deploy.json` file for the structure](./example.deploy.json)):
+
+```json
+{
+    "repositories": [
+        {
+            "name": "",
+            "target": "",
+            "branch": "",
+            "mothership_remote": false
+        }
+    ]
+}
+```
+
+- `name` should match one of the submodule paths in the [`modules/` directory](./modules/).
+- `target` is the path on the current machine where you want the cloned repository to exist.
+- `branch` (default should be `main`) sets the branch to checkout after cloning.
+- `mothership_remote` is a boolean value. When `true`, the submodule's remote will be the path where you cloned Mothership (i.e. `~/Mothership`).
+  - If you leave `"mothership_remote": true`, the cloned repository will be pointed back at the Mothership directory.
+  - This means to pull updates, you need to `cd` back to the Mothership remote and [update the submodules](#updating-submodules), then `cd` to the cloned repository and run `git pull`.
+  - This can help to control updates to configurations; you won't accidentally pull changes until you switch back to the Mothership repository and pull the submodule.
 
 ### Updating submodules
 
