@@ -63,6 +63,9 @@ MANIFEST
 *.cover
 .pytest_cache/
 
+## Mothership repo ignores
+deploy.json
+
 ## KEEP EVERYTHING BELOW AT THE BOTTOM
 
 ## Allow example files
