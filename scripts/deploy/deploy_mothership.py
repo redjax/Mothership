@@ -34,6 +34,20 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def is_git_available() -> bool:
+    """Check if git executable is available in PATH."""
+    try:
+        subprocess.run(["git", "--version"], check=True, capture_output=True, timeout=5)
+        return True
+
+    except (
+        subprocess.CalledProcessError,
+        FileNotFoundError,
+        subprocess.TimeoutExpired,
+    ):
+        return False
+
+
 @dataclass
 class RepositoryConfig:
     """Container for git repositories loaded from JSON.
@@ -294,6 +308,10 @@ class MothershipController:
 
 
 if __name__ == "__main__":
+    if not is_git_available():
+        print("[ERROR] Git is not installed, or is not available in the PATH")
+        sys.exit(1)
+
     args = parse_args()
 
     mothership_dir = args.mothership.absolute()
@@ -304,5 +322,9 @@ if __name__ == "__main__":
         else args.deployment_config.absolute()
     )
 
-    controller = MothershipController(mothership_dir, config_path)
-    controller.deploy_all()
+    try:
+        controller = MothershipController(mothership_dir, config_path)
+        controller.deploy_all()
+    except Exception as exc:
+        print(f"[ERROR] ({type(exc).__name__}) Failed to deploy repositories: {exc}")
+        sys.exit(1)
