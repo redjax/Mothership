@@ -1,11 +1,37 @@
+#!/usr/bin/env python3
+"""Mothership deploy tool - MothershipController + CLI args."""
+import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
-import argparse
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List
+from typing import List, Optional
+
+
+def parse_args() -> argparse.Namespace:
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(description="Mothership repository deployer.")
+
+    parser.add_argument(
+        "-c",
+        "--deployment-config",
+        default="deploy.json",
+        type=Path,
+        help="Path to JSON file defining Mothership deployment plan. Default: deploy.json",
+    )
+
+    parser.add_argument(
+        "-m",
+        "--mothership",
+        default=Path.home() / "Mothership",
+        type=Path,
+        help="Path to Mothership repo. Default: ~/Mothership",
+    )
+
+    return parser.parse_args()
 
 
 @dataclass
@@ -43,154 +69,181 @@ class DeployConfig:
         """Load and validate from JSON."""
         config = json.loads(path.read_text())
 
-        ## List to store repositories loaded from JSON
         repos = []
 
         for repo_data in config.get("repositories", []):
             repos.append(RepositoryConfig(**repo_data))
-
         return cls(repositories=repos)
 
 
-def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Mothership repository deployer.")
+class MothershipController:
+    """End-to-end Mothership deployment controller."""
 
-    parser.add_argument(
-        "-c",
-        "--deployment-config",
-        default="deploy.json",
-        type=Path,
-        help="Path to JSON file defining Mothership deployment plan. Default: deploy.json",
-    )
+    def __init__(self, mothership_dir: Path, config_path: Path):
+        self.mothership_dir = mothership_dir.absolute()
+        self.config_path = config_path.absolute()
+        self.config = self._load_config()
+        self.deploy_order = self._calculate_deploy_order()
 
-    return parser.parse_args()
+    def _load_config(self) -> DeployConfig:
+        """Load and validate config."""
+        if not self.mothership_dir.exists():
+            raise FileNotFoundError(f"Mothership not found at {self.mothership_dir}")
 
+        if not self.config_path.exists():
+            raise FileNotFoundError(f"deploy.json not found at {self.config_path}")
 
-def run_git(*args: str, cwd: Path | None = None, check: bool = True) -> str:
-    """Run a git command using host CLI and return the output."""
-    result = subprocess.run(
-        ["git"] + list(args), cwd=cwd, check=check, capture_output=True, text=True
-    )
+        return DeployConfig.from_json(self.config_path)
 
-    return result.stdout.strip()
+    def _calculate_deploy_order(self) -> List[RepositoryConfig]:
+        """git_dir first, preserve order for others."""
+        git_dir_repo = None
+        other_repos = []
 
+        for repo in self.config.repositories:
+            if repo.name == "git_dir":
+                git_dir_repo = repo
+            else:
+                other_repos.append(repo)
 
-def get_submodule_remote(mothership_dir: Path, name: str) -> str:
-    """Extract original git remote URL from submodule."""
-    submodule_dir = mothership_dir / "modules" / name
+        deploy_order = []
 
-    if submodule_dir.exists():
-        remote = run_git("config", "--get", "remote.origin.url", cwd=submodule_dir)
+        if git_dir_repo:
+            deploy_order.append(git_dir_repo)
 
-        if remote:
-            return remote
+        deploy_order.extend(other_repos)
 
-    gitmodules = mothership_dir / ".gitmodules"
+        return deploy_order
 
-    if gitmodules.exists():
-        remote = run_git(
-            "config", "-f", ".gitmodules", f"submodule.{name}.url", cwd=mothership_dir
+    def run_git(
+        self, *args: str, cwd: Optional[Path] = None, check: bool = True
+    ) -> str:
+        """Run git command."""
+        result = subprocess.run(
+            ["git"] + list(args), cwd=cwd, check=check, capture_output=True, text=True
         )
 
-        if remote:
-            return remote
+        return result.stdout.strip()
 
-    raise ValueError(f"No remote found for submodule '{name}'")
+    def get_submodule_remote(self, name: str) -> str:
+        """Extract original git remote URL from submodule."""
+        submodule_dir = self.mothership_dir / "modules" / name
 
+        if submodule_dir.exists():
+            remote = self.run_git(
+                "config", "--get", "remote.origin.url", cwd=submodule_dir
+            )
+            if remote:
+                return remote
 
-def deploy_repo(repo: RepositoryConfig, mothership_dir: Path) -> None:
-    """Deploy a git repository from the Mothership."""
-    target = Path(repo.target).expanduser()
-    src = mothership_dir / "modules" / repo.name
+        gitmodules = self.mothership_dir / ".gitmodules"
 
-    if not src.exists():
-        raise FileNotFoundError(f"Submodule {src} not found")
+        if gitmodules.exists():
+            remote = self.run_git(
+                "config",
+                "-f",
+                ".gitmodules",
+                f"submodule.{name}.url",
+                cwd=self.mothership_dir,
+            )
 
-    print(f"Deploying {repo.name} → {target}")
+            if remote:
+                return remote
 
-    if target.exists():
-        if target.is_dir() and (target / ".git").exists():
-            print(f"  Skipping - already exists (git repo detected)")
-            return
+        raise ValueError(f"No remote found for submodule '{name}'")
+
+    def deploy_repo(self, repo: RepositoryConfig) -> None:
+        """Deploy single repository."""
+        target = Path(repo.target).expanduser()
+        src = self.mothership_dir / "modules" / repo.name
+
+        if not src.exists():
+            raise FileNotFoundError(f"Submodule {src} not found")
+
+        print(f"Deploying {repo.name} → {target}")
+
+        if target.exists():
+            if target.is_dir() and (target / ".git").exists():
+                print(f"  Skipping - already exists (git repo)")
+                return
+
+            else:
+                print(f"  Target exists but not git repo - skipping")
+                return
+
+        target.parent.mkdir(parents=True, exist_ok=True)
+        subprocess.run(["git", "clone", str(src), str(target)], check=True)
+
+        if repo.mothership_remote:
+            remote_path = str(src)
+
+            print(f"  Remote: MOTHERSHIP {remote_path}")
+
+            subprocess.run(
+                ["git", "remote", "set-url", "origin", remote_path], cwd=target
+            )
         else:
-            print(f"  Target exists but not a git repo - removing")
-            import shutil
+            remote = self.get_submodule_remote(repo.name)
 
-            shutil.rmtree(target)
+            print(f"  Remote: {remote}")
 
-    target.parent.mkdir(parents=True, exist_ok=True)
-    subprocess.run(["git", "clone", str(src), str(target)], check=True)
+            subprocess.run(["git", "remote", "set-url", "origin", remote], cwd=target)
 
-    if repo.mothership_remote:
-        remote_path = str(src)
-        print(f"  Remote: MOTHERSHIP {remote_path}")
+        os.chdir(target)
 
-        subprocess.run(["git", "remote", "set-url", "origin", remote_path], cwd=target)
-    else:
-        remote = get_submodule_remote(mothership_dir, repo.name)
-        print(f"  Remote: {remote}")
+        try:
+            subprocess.run(["git", "checkout", repo.branch], check=True)
+        except subprocess.CalledProcessError:
+            subprocess.run(["git", "checkout", "-b", repo.branch], check=True)
 
-        subprocess.run(["git", "remote", "set-url", "origin", remote], cwd=target)
+        try:
+            subprocess.run(
+                [
+                    "git",
+                    "branch",
+                    "--set-upstream-to",
+                    f"origin/{repo.branch}",
+                    repo.branch,
+                ]
+            )
 
-    ## cd to path where command should run
-    os.chdir(target)
+            subprocess.run(["git", "pull", "--ff-only"], check=True)
+        except subprocess.CalledProcessError:
+            print(f"  Note: Could not set upstream/pull")
 
-    try:
-        subprocess.run(["git", "checkout", repo.branch], check=True)
-    except subprocess.CalledProcessError:
-        subprocess.run(["git", "checkout", "-b", repo.branch], check=True)
+        os.chdir(self.mothership_dir)
+        print(f"  ✓ {repo.name} deployed")
 
-    try:
-        subprocess.run(
-            ["git", "branch", "--set-upstream-to", f"origin/{repo.branch}", repo.branch]
-        )
+    def print_deploy_order(self) -> None:
+        """Show deploy order."""
+        print("Deploy order:")
 
-        subprocess.run(["git", "pull", "--ff-only"], check=True)
-    except subprocess.CalledProcessError:
-        print(f"  Note: Could not set upstream/pull")
+        for repo in self.deploy_order:
+            print(f"  {repo.name}")
 
-    os.chdir(mothership_dir)
+        print()
 
-    print(f"  ✓ {repo.name} deployed")
+    def deploy_all(self) -> None:
+        """Deploy all repositories."""
+        self.print_deploy_order()
+
+        for repo in self.deploy_order:
+            self.deploy_repo(repo)
+            print()
+
+        print("\nDeploy complete")
 
 
 if __name__ == "__main__":
     args = parse_args()
 
-    mothership_dir = Path.home() / "Mothership"
-    if not mothership_dir.exists():
-        print(f"Error: Mothership not found at {mothership_dir}")
-        sys.exit(1)
+    mothership_dir = args.mothership.absolute()
 
-    config_path = mothership_dir / "deploy.json"
-    if not config_path.exists():
-        print(f"Error: deploy.json not found at {config_path}")
-        sys.exit(1)
+    config_path = (
+        mothership_dir / args.deployment_config
+        if not args.deployment_config.is_absolute()
+        else args.deployment_config.absolute()
+    )
 
-    config = DeployConfig.from_json(config_path)
-
-    ## Prioritize git_dir first, preserve order for others
-    git_dir_repo = None
-    other_repos = []
-
-    for repo in config.repositories:
-        if repo.name == "git_dir":
-            git_dir_repo = repo
-        else:
-            other_repos.append(repo)
-
-    deploy_order = []
-
-    if git_dir_repo:
-        deploy_order.append(git_dir_repo)
-    deploy_order.extend(other_repos)
-
-    print("Deploy order:")
-    for repo in deploy_order:
-        print(f"  {repo.name}")
-    print()
-
-    for repo in deploy_order:
-        deploy_repo(repo, mothership_dir)
-
-    print("\nDeploy complete")
+    controller = MothershipController(mothership_dir, config_path)
+    controller.deploy_all()
