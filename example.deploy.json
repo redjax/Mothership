@@ -1,0 +1,16 @@
+{
+    "repositories": [
+        {
+            "name": "git_dir",
+            "target": "~/git",
+            "branch": "main",
+            "mothership_remote": false
+        },
+        {
+            "name": "neovim",
+            "target": "~/git/repos/neovim",
+            "branch": "main",
+            "mothership_remote": false
+        }
+    ]
+}
