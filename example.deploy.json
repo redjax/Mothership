@@ -1,4 +1,5 @@
 {
+    "mothership_url": "https://github.com/redjax/Mothership",
     "repositories": [
         {
             "name": "git_dir",
