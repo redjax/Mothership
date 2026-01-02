@@ -2,6 +2,7 @@ import json
 import os
 import subprocess
 import sys
+import argparse
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List
@@ -49,6 +50,20 @@ class DeployConfig:
             repos.append(RepositoryConfig(**repo_data))
 
         return cls(repositories=repos)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Mothership repository deployer.")
+
+    parser.add_argument(
+        "-c",
+        "--deployment-config",
+        default="deploy.json",
+        type=Path,
+        help="Path to JSON file defining Mothership deployment plan. Default: deploy.json",
+    )
+
+    return parser.parse_args()
 
 
 def run_git(*args: str, cwd: Path | None = None, check: bool = True) -> str:
@@ -140,6 +155,8 @@ def deploy_repo(repo: RepositoryConfig, mothership_dir: Path) -> None:
 
 
 if __name__ == "__main__":
+    args = parse_args()
+
     mothership_dir = Path.home() / "Mothership"
     if not mothership_dir.exists():
         print(f"Error: Mothership not found at {mothership_dir}")
