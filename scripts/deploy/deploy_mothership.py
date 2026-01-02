@@ -36,7 +36,14 @@ def parse_args() -> argparse.Namespace:
 
 @dataclass
 class RepositoryConfig:
-    """Container for git repositories loaded from JSON."""
+    """Container for git repositories loaded from JSON.
+
+    Properties:
+        name (str): Name of the repository.
+        target (str): Target directory for the repository.
+        branch (str): Branch to checkout.
+        mothership_remote (bool): Flag to determine whether repo should continue using Mothership as the remote, or if it should use the submodule's origin.
+    """
 
     name: str
     target: str
@@ -60,24 +67,37 @@ class RepositoryConfig:
 
 @dataclass
 class DeployConfig:
-    """Mothership deployment configuration loaded from JSON."""
+    """Mothership deployment configuration loaded from JSON.
+
+    Properties:
+        repositories (List[RepositoryConfig]): List of Mothership repositories to deploy.
+    """
 
     repositories: List[RepositoryConfig]
 
     @classmethod
     def from_json(cls, path: Path) -> "DeployConfig":
         """Load and validate from JSON."""
-        config = json.loads(path.read_text())
+        config: dict = json.loads(path.read_text())
 
+        ## List to store parsed repositories
         repos = []
 
         for repo_data in config.get("repositories", []):
             repos.append(RepositoryConfig(**repo_data))
+
         return cls(repositories=repos)
 
 
 class MothershipController:
-    """End-to-end Mothership deployment controller."""
+    """End-to-end Mothership deployment controller.
+
+    Attributes:
+        mothership_dir (Path): Path to Mothership repo.
+        config_path (Path): Path to Mothership deployment config.
+        config (DeployConfig): Parsed Mothership deployment config.
+        deploy_order (List[RepositoryConfig]): List of repositories to deploy in order.
+    """
 
     def __init__(self, mothership_dir: Path, config_path: Path):
         self.mothership_dir = mothership_dir.absolute()
@@ -96,10 +116,13 @@ class MothershipController:
         return DeployConfig.from_json(self.config_path)
 
     def _calculate_deploy_order(self) -> List[RepositoryConfig]:
-        """git_dir first, preserve order for others."""
+        """Ensure git_dir is cloned first if it's present, preserve order for others."""
+        ## If git_dir is declared in deployment, this will be overwritten
         git_dir_repo = None
+        ## List for non-git_dir repos
         other_repos = []
 
+        ## Split into git_dir and non-git_dir
         for repo in self.config.repositories:
             if repo.name == "git_dir":
                 git_dir_repo = repo
@@ -108,6 +131,7 @@ class MothershipController:
 
         deploy_order = []
 
+        ## Ensure git_dir is first
         if git_dir_repo:
             deploy_order.append(git_dir_repo)
 
@@ -118,7 +142,13 @@ class MothershipController:
     def run_git(
         self, *args: str, cwd: Optional[Path] = None, check: bool = True
     ) -> str:
-        """Run git command."""
+        """Run git command.
+
+        Params:
+            args (str): Arguments to pass to git.
+            cwd (Path): Working directory to run git in.
+            check (bool): Whether to raise an exception on non-zero exit code.
+        """
         result = subprocess.run(
             ["git"] + list(args), cwd=cwd, check=check, capture_output=True, text=True
         )
@@ -126,19 +156,29 @@ class MothershipController:
         return result.stdout.strip()
 
     def get_submodule_remote(self, name: str) -> str:
-        """Extract original git remote URL from submodule."""
-        submodule_dir = self.mothership_dir / "modules" / name
+        """Extract original git remote URL from submodule.
 
+        Params:
+            name (str): Name of submodule. Corresponds to a path in the Mothership's modules/ directory.
+        """
+        ## Set path to submodule
+        submodule_dir: Path = self.mothership_dir / "modules" / name
+
+        ## Check if submodule exists
         if submodule_dir.exists():
+            ## If submodule exists, check if it has a remote
             remote = self.run_git(
                 "config", "--get", "remote.origin.url", cwd=submodule_dir
             )
+
             if remote:
                 return remote
 
-        gitmodules = self.mothership_dir / ".gitmodules"
+        ## Path to .gitmodules file
+        gitmodules: Path = self.mothership_dir / ".gitmodules"
 
         if gitmodules.exists():
+            ## If .gitmodules exists, check if it has a remote
             remote = self.run_git(
                 "config",
                 "-f",
@@ -153,27 +193,41 @@ class MothershipController:
         raise ValueError(f"No remote found for submodule '{name}'")
 
     def deploy_repo(self, repo: RepositoryConfig) -> None:
-        """Deploy single repository."""
+        """Deploy single repository from the Mothership.
+
+        Params:
+            repo (RepositoryConfig): Repository to deploy.
+        """
+        ## Get path to deployment target (where repo will be cloned)
         target = Path(repo.target).expanduser()
-        src = self.mothership_dir / "modules" / repo.name
+        ## Get path to submodule in the Mothership
+        src: Path = self.mothership_dir / "modules" / repo.name
 
         if not src.exists():
             raise FileNotFoundError(f"Submodule {src} not found")
 
         print(f"Deploying {repo.name} → {target}")
 
+        ## Skip if target already exists
         if target.exists():
             if target.is_dir() and (target / ".git").exists():
-                print(f"  Skipping - already exists (git repo)")
+                print(
+                    f"  Skipping, target '{target}' already exists and is a git repository)"
+                )
                 return
 
             else:
-                print(f"  Target exists but not git repo - skipping")
+                print(
+                    f"  Skipping, target '{target}' already exists but is not a git repository"
+                )
                 return
 
+        ## Ensure target directory exists
         target.parent.mkdir(parents=True, exist_ok=True)
+        ## Clone submodule to target
         subprocess.run(["git", "clone", str(src), str(target)], check=True)
 
+        ## Continue using local Mothership path as remote
         if repo.mothership_remote:
             remote_path = str(src)
 
@@ -182,6 +236,8 @@ class MothershipController:
             subprocess.run(
                 ["git", "remote", "set-url", "origin", remote_path], cwd=target
             )
+
+        ## Extract submodule's original remote origin and set as remote for cloned repository
         else:
             remote = self.get_submodule_remote(repo.name)
 
@@ -191,11 +247,13 @@ class MothershipController:
 
         os.chdir(target)
 
+        ## Checkout branch
         try:
             subprocess.run(["git", "checkout", repo.branch], check=True)
         except subprocess.CalledProcessError:
             subprocess.run(["git", "checkout", "-b", repo.branch], check=True)
 
+        ## Set upstream and pull
         try:
             subprocess.run(
                 [
@@ -211,6 +269,7 @@ class MothershipController:
         except subprocess.CalledProcessError:
             print(f"  Note: Could not set upstream/pull")
 
+        ## Return to Mothership directory
         os.chdir(self.mothership_dir)
         print(f"  ✓ {repo.name} deployed")
 
