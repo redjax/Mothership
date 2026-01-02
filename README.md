@@ -45,6 +45,7 @@ Clone this repository, then pull in the "fleet" with `git submodule update --ini
 - [Purpose](#purpose)
 - [Usage](#usage)
 - [Submodules](#submodules)
+  - [Deploying submodules](#deploying-submodules)
   - [Updating submodules](#updating-submodules)
   - [Adding submodules](#adding-submodules)
   - [Removing submodules](#removing-submodules)
@@ -104,6 +105,33 @@ Table of the submodules found in the [modules/ directory](./modules/)
 | Terraform         | https://github.com/redjax/Terraform         | My Terraform monorepo, where I store Terraform modules I write for myself.                                                                                                                                                                                         |
 | Toolbelt          | https://github.com/redjax/Toolbelt          | Dynamic `README.md` file populated by a JSON file & Python script. An awesomelist-style collection of tools I use.                                                                                                                                                 |
 | wezterm           | https://github.com/redjax/wezterm           | My Wezterm configuration.                                                                                                                                                                                                                                          |
+
+### Deploying submodules
+
+The Mothership can deploy submodules to paths on the filesystem by "cloning" the submodule. This initializes a standalone repository with the Mothership repository's path as its remote.
+
+For example, to deploy the [`git_dir` module](./modules/git_dir/) to `~/git`:
+
+```shell
+git clone . ~/git
+```
+
+If you `cd ~/git` and run `git remote -v`, you will see the remote is the local Mothership repository's path:
+
+```shell
+git remote -v
+origin  /path/to/Mothership/modules/git_dir/. (fetch)
+origin  /path/to/Mothership/modules/git_dir/. (push)
+```
+
+You can leave this configuration as-is, so you will need to [update the Mothership's submodules](#updating-submodules) before doing `git pull` to update the local repository. This centralizes updates, and can help control which version is checked out locally, which can be useful for app configurations.
+
+You can also change the remote back to the module's original repository. For example, set the `~/git` repository's remote back to [`git@github.com:redjax/git_dir.git`](https://github.com/redjax/git_dir.git):
+
+```shell
+git remote set-url origin "git@github.com:redjax/git_dir.git"
+git checkout main
+```
 
 ### Updating submodules
 
