@@ -2,6 +2,11 @@
 .DS_Store
 Thumbs.db
 
+## Build dir
+build/
+bin/
+dist/
+
 ## Editor directories and files
 *.swp
 *.swo
