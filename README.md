@@ -45,6 +45,8 @@ Clone this repository, then pull in the "fleet" with `git submodule update --ini
 - [Purpose](#purpose)
 - [Usage](#usage)
 - [Submodules](#submodules)
+  - [Deploying submodules](#deploying-submodules)
+    - [Python deployment script](#python-deployment-script)
   - [Updating submodules](#updating-submodules)
   - [Adding submodules](#adding-submodules)
   - [Removing submodules](#removing-submodules)
@@ -104,6 +106,60 @@ Table of the submodules found in the [modules/ directory](./modules/)
 | Terraform         | https://github.com/redjax/Terraform         | My Terraform monorepo, where I store Terraform modules I write for myself.                                                                                                                                                                                         |
 | Toolbelt          | https://github.com/redjax/Toolbelt          | Dynamic `README.md` file populated by a JSON file & Python script. An awesomelist-style collection of tools I use.                                                                                                                                                 |
 | wezterm           | https://github.com/redjax/wezterm           | My Wezterm configuration.                                                                                                                                                                                                                                          |
+
+### Deploying submodules
+
+The Mothership can deploy submodules to paths on the filesystem by "cloning" the submodule. This initializes a standalone repository with the Mothership repository's path as its remote.
+
+For example, to deploy the [`git_dir` module](./modules/git_dir/) to `~/git`:
+
+```shell
+git clone . ~/git
+```
+
+If you `cd ~/git` and run `git remote -v`, you will see the remote is the local Mothership repository's path:
+
+```shell
+git remote -v
+origin  /path/to/Mothership/modules/git_dir/. (fetch)
+origin  /path/to/Mothership/modules/git_dir/. (push)
+```
+
+You can leave this configuration as-is, so you will need to [update the Mothership's submodules](#updating-submodules) before doing `git pull` to update the local repository. This centralizes updates, and can help control which version is checked out locally, which can be useful for app configurations.
+
+You can also change the remote back to the module's original repository. For example, set the `~/git` repository's remote back to [`git@github.com:redjax/git_dir.git`](https://github.com/redjax/git_dir.git):
+
+```shell
+git remote set-url origin "git@github.com:redjax/git_dir.git"
+git checkout main
+```
+
+#### Python deployment script
+
+The [`do_deployment.py` script](./scripts/deploy/do_deployment.py) can clone repositories to paths on the host, automating the process of cloning out of the Mothership repository and optionally setting the remote back to the submodule's origin.
+
+Start by creating a `deploy.json` file (see the [`example.deploy.json` file for the structure](./example.deploy.json)):
+
+```json
+{
+    "repositories": [
+        {
+            "name": "",
+            "target": "",
+            "branch": "",
+            "mothership_remote": false
+        }
+    ]
+}
+```
+
+- `name` should match one of the submodule paths in the [`modules/` directory](./modules/).
+- `target` is the path on the current machine where you want the cloned repository to exist.
+- `branch` (default should be `main`) sets the branch to checkout after cloning.
+- `mothership_remote` is a boolean value. When `true`, the submodule's remote will be the path where you cloned Mothership (i.e. `~/Mothership`).
+  - If you leave `"mothership_remote": true`, the cloned repository will be pointed back at the Mothership directory.
+  - This means to pull updates, you need to `cd` back to the Mothership remote and [update the submodules](#updating-submodules), then `cd` to the cloned repository and run `git pull`.
+  - This can help to control updates to configurations; you won't accidentally pull changes until you switch back to the Mothership repository and pull the submodule.
 
 ### Updating submodules
 
