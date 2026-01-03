@@ -16,9 +16,9 @@
 [submodule "modules/wezterm"]
 	path = modules/wezterm
 	url = https://github.com/redjax/wezterm.git
-[submodule "modules/ansible_homelab"]
-	path = modules/ansible_homelab
-	url = https://github.com/redjax/ansible_homelab.git
+[submodule "modules/Ansible"]
+	path = modules/Ansible
+	url = https://github.com/redjax/Ansible.git
 [submodule "modules/Terraform"]
 	path = modules/Terraform
 	url = https://github.com/redjax/Terraform.git
