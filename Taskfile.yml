@@ -1,0 +1,71 @@
+---
+version: "3"
+
+tasks:
+  init:
+    desc: "Initialize repository after cloning. Pulls all submodules."
+    cmds:
+      - git submodule update --init --recursive
+
+  sync:
+    desc: "Sync submodule URLs and paths from .gitmodules"
+    cmds:
+      - git submodule sync --recursive
+
+  update:
+    desc: Update all submodules to latest remote HEAD
+    cmds:
+      - git submodule update --remote --recursive
+
+  reset-submodules:
+    desc: Deinit and reinit all submodules (safe recovery)
+    cmds:
+      - git submodule deinit -f .
+      - git submodule update --init --recursive
+
+  status:
+    desc: Show submodule status
+    cmds:
+      - git submodule status
+
+  show-dirty:
+    desc: List submodules with uncommitted changes
+    cmds:
+      - |
+        git submodule foreach '
+          if ! git diff --quiet || ! git diff --cached --quiet; then
+            echo "  DIRTY: $path"
+          else
+            echo "  CLEAN: $path"
+          fi
+        '
+
+  check-gitdir:
+    desc: Verify submodule gitdir pointers are valid
+    cmds:
+      - |
+        git submodule foreach '
+          if [ ! -f .git ]; then
+            echo "  BROKEN (.git missing): $path"
+            exit 1
+          else
+            echo "  OK: $path"
+          fi
+        '
+
+  check-urls:
+    desc: Check submodule URLs in .gitmodules vs local config
+    cmds:
+      - |
+        git config -f .gitmodules --get-regexp '^submodule\..*\.url$' | while read -r key url; do
+          path_key="${key%.url}.path"
+          path=$(git config -f .gitmodules --get "$path_key")
+          local_url=$(git config --get "submodule.$path.url" || true)
+
+          if [ "$url" != "$local_url" ]; then
+            echo "URL mismatch for $path"
+            echo "  .gitmodules: $url"
+            echo "  git config:  $local_url"
+            exit 1
+          fi
+        done

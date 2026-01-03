@@ -52,6 +52,7 @@ Clone this repository, then pull in the "fleet" with `git submodule update --ini
   - [Removing submodules](#removing-submodules)
   - [Change submodule remote](#change-submodule-remote)
   - [Move a submodule in the repository](#move-a-submodule-in-the-repository)
+- [Taskfile tasks](#taskfile-tasks)
 - [Troubleshooting](#troubleshooting)
   - [Submodule updates in pipeline not applied locally](#submodule-updates-in-pipeline-not-applied-locally)
 - [Links](#links)
@@ -211,6 +212,16 @@ After moving a submodule, commit like this:
 git add .gitmodules
 git add -u
 git commit -m "Move submodule to new path"
+```
+
+## Taskfile tasks
+
+The [`Taskfile.yml` file](./Taskfile.yml) defines tasks/automations for [`go-task/task`](https://github.com/go-task/task). This allows for powerful automation, and can be used locally or in pipelines.
+
+To see a list of tasks that can be run, use:
+
+```shell
+task -l
 ```
 
 ## Troubleshooting
