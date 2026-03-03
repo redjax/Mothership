@@ -46,6 +46,6 @@
 [submodule "modules/git_dir"]
 	path = modules/git_dir
 	url = https://github.com/redjax/git_dir.git
-[submodule "submodules/cheatsheets"]
-	path = submodules/cheatsheets
-	url = git@github.com:redjax/cheatsheets.git
+[submodule "modules/cheatsheets"]
+	path = modules/cheatsheets
+	url = https://github.com/redjax/cheatsheets.git
