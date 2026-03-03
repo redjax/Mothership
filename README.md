@@ -85,6 +85,9 @@ If you want to always pull submodule changes when they are updated, set the repo
 git config submodule.recurse true
 ```
 
+> [!NOTE]
+> If you use [`go-task/task`](https:/taskfile.dev), you can run `task init` to perform initial clone setup.
+
 ## Submodules
 
 Table of the submodules found in the [modules/ directory](./modules/)
