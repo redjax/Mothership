@@ -113,30 +113,32 @@ Table of the submodules found in the [modules/ directory](./modules/)
 
 ### Deploying submodules
 
-The Mothership can deploy submodules to paths on the filesystem by "cloning" the submodule. This initializes a standalone repository with the Mothership repository's path as its remote.
+The Mothership can deploy submodules to paths on the filesystem by "cloning" the submodule to that path. This initializes a standalone repository with the Mothership repository's path as its remote.
 
-For example, to deploy the [`git_dir` module](./modules/git_dir/) to `~/git`:
+For example, to deploy the [`Ansible` module](./modules/Ansible/) to `~/Ansible`:
 
 ```shell
-git clone . ~/git
+git clone . ~/Ansible
 ```
 
-If you `cd ~/git` and run `git remote -v`, you will see the remote is the local Mothership repository's path:
+If you `cd ~/Ansible` and run `git remote -v`, you will see the remote is the local Mothership repository's path:
 
 ```shell
 git remote -v
-origin  /path/to/Mothership/modules/git_dir/. (fetch)
-origin  /path/to/Mothership/modules/git_dir/. (push)
+origin  /path/to/Mothership/modules/Ansible/. (fetch)
+origin  /path/to/Mothership/modules/Ansible/. (push)
 ```
 
 You can leave this configuration as-is, so you will need to [update the Mothership's submodules](#updating-submodules) before doing `git pull` to update the local repository. This centralizes updates, and can help control which version is checked out locally, which can be useful for app configurations.
 
-You can also change the remote back to the module's original repository. For example, set the `~/git` repository's remote back to [`git@github.com:redjax/git_dir.git`](https://github.com/redjax/git_dir.git):
+You can also change the remote back to the module's original repository. For example, set the `~/Ansible` repository's remote back to [`git@github.com:redjax/Ansible.git`](https://github.com/redjax/git_dir.git):
 
 ```shell
 git remote set-url origin "git@github.com:redjax/git_dir.git"
 git checkout main
 ```
+
+This separates the repository clone from the Mothership completely. It is as if you ran `git clone https://github.com/redjax/Ansible.git`.
 
 #### Python deployment script
 
