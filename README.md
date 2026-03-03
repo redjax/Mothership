@@ -247,4 +247,3 @@ git config submodule.recurse true
 - [FreeCodeCamp: How to use Git submodules - explained with examples](https://www.freecodecamp.org/news/how-to-use-git-submodules/)
 - [Atlassian docs: Git submodules](https://www.atlassian.com/git/tutorials/git-submodule)
 - [HowToGeek: What are submodules, and how do you use them?](https://www.howtogeek.com/devops/what-are-git-submodules-and-how-do-you-use-them/)
-
