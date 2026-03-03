@@ -167,6 +167,8 @@ Start by creating a `deploy.json` file (see the [`example.deploy.json` file for 
   - This means to pull updates, you need to `cd` back to the Mothership remote and [update the submodules](#updating-submodules), then `cd` to the cloned repository and run `git pull`.
   - This can help to control updates to configurations; you won't accidentally pull changes until you switch back to the Mothership repository and pull the submodule.
 
+Run the [`scripts/deploy/do_deployment.py` script](./scripts/deploy/do_deployment.py) with `-c /path/to/your/deploy.json`.
+
 ### Updating submodules
 
 Run this command to recursively pull the `main` branch of each submodule:
