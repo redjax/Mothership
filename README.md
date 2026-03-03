@@ -59,9 +59,9 @@ Clone this repository, then pull in the "fleet" with `git submodule update --ini
 
 ## Purpose
 
-Honestly, I'm not quite sure yet. I'm testing out submodules, and thought it might be convenient to have all the repos I clone on my main machine in one "mothership" configuration. Maybe I'll write scripts to keep this up to date as a sort of backup, maybe it will just serve as a map to the other repositories, maybe it'll actually be useful!
+I use git to manage a lot of my [configurations](https://github.com/redjax/dotfiles), [scripts](https://github.com/redjax/system_scripts), and tools (like my CLI swiss army knife [`syst`](https://github.com/redjax/syst)). Instead of cloning each of my "core" repositories individually, I can clone this repository and [extract the submodules to their own paths](#deploying-submodules).
 
-I'll probably edit this section to give the project a focus at some point.
+This repository started as a way for me to practice working with Git submodules, and has turned into my configuration hub.
 
 ## Usage
 
@@ -84,6 +84,9 @@ If you want to always pull submodule changes when they are updated, set the repo
 ```bash
 git config submodule.recurse true
 ```
+
+> [!NOTE]
+> If you use [`go-task/task`](https:/taskfile.dev), you can run `task init` to perform initial clone setup.
 
 ## Submodules
 
@@ -110,30 +113,32 @@ Table of the submodules found in the [modules/ directory](./modules/)
 
 ### Deploying submodules
 
-The Mothership can deploy submodules to paths on the filesystem by "cloning" the submodule. This initializes a standalone repository with the Mothership repository's path as its remote.
+The Mothership can deploy submodules to paths on the filesystem by "cloning" the submodule to that path. This initializes a standalone repository with the Mothership repository's path as its remote.
 
-For example, to deploy the [`git_dir` module](./modules/git_dir/) to `~/git`:
+For example, to deploy the [`Ansible` module](./modules/Ansible/) to `~/Ansible`:
 
 ```shell
-git clone . ~/git
+git clone . ~/Ansible
 ```
 
-If you `cd ~/git` and run `git remote -v`, you will see the remote is the local Mothership repository's path:
+If you `cd ~/Ansible` and run `git remote -v`, you will see the remote is the local Mothership repository's path:
 
 ```shell
 git remote -v
-origin  /path/to/Mothership/modules/git_dir/. (fetch)
-origin  /path/to/Mothership/modules/git_dir/. (push)
+origin  /path/to/Mothership/modules/Ansible/. (fetch)
+origin  /path/to/Mothership/modules/Ansible/. (push)
 ```
 
 You can leave this configuration as-is, so you will need to [update the Mothership's submodules](#updating-submodules) before doing `git pull` to update the local repository. This centralizes updates, and can help control which version is checked out locally, which can be useful for app configurations.
 
-You can also change the remote back to the module's original repository. For example, set the `~/git` repository's remote back to [`git@github.com:redjax/git_dir.git`](https://github.com/redjax/git_dir.git):
+You can also change the remote back to the module's original repository. For example, set the `~/Ansible` repository's remote back to [`git@github.com:redjax/Ansible.git`](https://github.com/redjax/git_dir.git):
 
 ```shell
 git remote set-url origin "git@github.com:redjax/git_dir.git"
 git checkout main
 ```
+
+This separates the repository clone from the Mothership completely. It is as if you ran `git clone https://github.com/redjax/Ansible.git`.
 
 #### Python deployment script
 
@@ -161,6 +166,8 @@ Start by creating a `deploy.json` file (see the [`example.deploy.json` file for 
   - If you leave `"mothership_remote": true`, the cloned repository will be pointed back at the Mothership directory.
   - This means to pull updates, you need to `cd` back to the Mothership remote and [update the submodules](#updating-submodules), then `cd` to the cloned repository and run `git pull`.
   - This can help to control updates to configurations; you won't accidentally pull changes until you switch back to the Mothership repository and pull the submodule.
+
+Run the [`scripts/deploy/do_deployment.py` script](./scripts/deploy/do_deployment.py) with `-c /path/to/your/deploy.json`.
 
 ### Updating submodules
 
@@ -240,4 +247,3 @@ git config submodule.recurse true
 - [FreeCodeCamp: How to use Git submodules - explained with examples](https://www.freecodecamp.org/news/how-to-use-git-submodules/)
 - [Atlassian docs: Git submodules](https://www.atlassian.com/git/tutorials/git-submodule)
 - [HowToGeek: What are submodules, and how do you use them?](https://www.howtogeek.com/devops/what-are-git-submodules-and-how-do-you-use-them/)
-
