@@ -59,9 +59,9 @@ Clone this repository, then pull in the "fleet" with `git submodule update --ini
 
 ## Purpose
 
-Honestly, I'm not quite sure yet. I'm testing out submodules, and thought it might be convenient to have all the repos I clone on my main machine in one "mothership" configuration. Maybe I'll write scripts to keep this up to date as a sort of backup, maybe it will just serve as a map to the other repositories, maybe it'll actually be useful!
+I use git to manage a lot of my [configurations](https://github.com/redjax/dotfiles), [scripts](https://github.com/redjax/system_scripts), and tools (like my CLI swiss army knife [`syst`](https://github.com/redjax/syst)). Instead of cloning each of my "core" repositories individually, I can clone this repository and [extract the submodules to their own paths](#deploying-submodules).
 
-I'll probably edit this section to give the project a focus at some point.
+This repository started as a way for me to practice working with Git submodules, and has turned into my configuration hub.
 
 ## Usage
 
