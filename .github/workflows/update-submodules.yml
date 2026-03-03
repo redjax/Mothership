@@ -5,7 +5,8 @@ on:
   workflow_dispatch:
   ## Scheduled trigger
   schedule:
-    - cron: "0 0,12 * * *"
+    ## Every sunday at 4am
+    - cron: "0 4 * * 0"
 
 jobs:
   update-submodules:
@@ -20,6 +21,7 @@ jobs:
         with:
           submodules: false
           token: ${{ secrets.GH_READONLY_PAT }}
+          fetch-depth: 1
 
       - name: Rewrite submodule URLs to include READ-ONLY PAT and update submodules
         env:
@@ -29,38 +31,29 @@ jobs:
           git submodule sync
           git submodule update --init --recursive
 
-      ## Run submodules update script
+      ## Run submodules update script, add timestamp to README
       - name: Run update submodules script
         run: |
           chmod +x ./scripts/update-submodules.sh
           ./scripts/update-submodules.sh
 
-      ## Check for updated modules
-      - name: Check for changes in ./modules
+      - name: Check for submodule changes
         id: changes
         run: |
           git add ./modules
+
           if git diff --cached --quiet; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
-      ## Commit submodule changes if there are any
-      - name: Commit submodule changes
-        if: steps.changes.outputs.changed == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore(submodules): Update submodules"
-
-      - name: Update README last updated timestamp
+      - name: Update timestamp if changes detected
         if: steps.changes.outputs.changed == 'true'
         run: |
           timestamp=$(date -u +"%Y-%m-%d %H:%M UTC")
           sed -i "s/<!--LAST_UPDATED-->.*<!--END_LAST_UPDATED-->/<!--LAST_UPDATED-->${timestamp}<!--END_LAST_UPDATED-->/" README.md
           git add README.md
-          git commit -m "chore: update last submodule metadata refresh timestamp"
 
       ## Commit and create PR if there are changes, using READ-WRITE token
       - name: Commit and create PR if there are changes
@@ -126,4 +119,3 @@ jobs:
           fi
 
           exit 0
-
