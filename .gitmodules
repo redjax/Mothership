@@ -49,3 +49,6 @@
 [submodule "modules/cheatsheets"]
 	path = modules/cheatsheets
 	url = https://github.com/redjax/cheatsheets.git
+[submodule "modules/PipelineTemplates"]
+	path = modules/PipelineTemplates
+	url = https://github.com/redjax/PipelineTemplates.git
