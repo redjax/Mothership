@@ -52,3 +52,6 @@
 [submodule "modules/PipelineTemplates"]
 	path = modules/PipelineTemplates
 	url = https://github.com/redjax/PipelineTemplates.git
+[submodule "modules/Dockerfiles"]
+	path = modules/Dockerfiles
+	url = https://github.com/redjax/Dockerfiles.git
