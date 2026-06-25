@@ -17,7 +17,7 @@ jobs:
       pr_number: ${{ steps.create_pr.outputs.pull-request-number }}
     steps:
       ## Use READ-ONLY token for checkout and submodules
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: false
           token: ${{ secrets.GH_READONLY_PAT }}
@@ -78,7 +78,7 @@ jobs:
     if: needs.update-submodules.outputs.pr_number != ''
     steps:
       ## Use READ-ONLY token for checkout and submodules
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: false
           token: ${{ secrets.GH_READONLY_PAT }}
