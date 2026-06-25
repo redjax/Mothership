@@ -28,9 +28,6 @@
 [submodule "modules/helix"]
 	path = modules/helix
 	url = https://github.com/redjax/helix.git
-[submodule "modules/emacs"]
-	path = modules/emacs
-	url = https://github.com/redjax/emacs.git
 [submodule "modules/templates"]
 	path = modules/templates
 	url = https://github.com/redjax/templates.git
