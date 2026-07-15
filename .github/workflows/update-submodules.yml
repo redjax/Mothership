@@ -59,7 +59,7 @@ jobs:
       - name: Commit and create PR if there are changes
         id: create_pr
         if: steps.changes.outputs.changed == 'true'
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ secrets.GH_READWRITE_PAT }}
           commit-message: "chore(submodules): Update submodules and refresh timestamp"
