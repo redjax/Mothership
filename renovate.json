@@ -4,11 +4,11 @@
         "config:recommended"
     ],
     "enabledManagers": [
-        "uv",
+        "pep621",
         "github-actions"
     ],
     "ignorePaths": [
-        "modules/**",
+        "submodules/**",
         "**/.gitmodules"
     ],
     "lockFileMaintenance": {
@@ -17,7 +17,7 @@
     "packageRules": [
         {
             "matchManagers": [
-                "uv"
+                "pep621"
             ],
             "matchPaths": [
                 "scripts/updater/**"
@@ -28,8 +28,8 @@
             "matchManagers": [
                 "github-actions"
             ],
-            "ignorePaths": [
-                "submodules/**"
+            "matchPaths": [
+                ".github/workflows/**"
             ]
         }
     ]
