@@ -19,7 +19,7 @@
             "matchManagers": [
                 "pep621"
             ],
-            "matchPaths": [
+            "matchFileNames": [
                 "scripts/updater/**"
             ],
             "rangeStrategy": "bump"
@@ -28,7 +28,7 @@
             "matchManagers": [
                 "github-actions"
             ],
-            "matchPaths": [
+            "matchFileNames": [
                 ".github/workflows/**"
             ]
         }
