@@ -31,6 +31,22 @@
             "matchFileNames": [
                 ".github/workflows/**"
             ]
+        },
+        {
+            "description": "Automatically merge patch and minor updates",
+            "matchUpdateTypes": [
+                "patch",
+                "minor"
+            ],
+            "automerge": true,
+            "automergeType": "pr"
+        },
+        {
+            "description": "Require manual review for major updates",
+            "matchUpdateTypes": [
+                "major"
+            ],
+            "automerge": false
         }
     ]
 }
